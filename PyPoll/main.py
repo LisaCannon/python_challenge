@@ -51,7 +51,6 @@ print(f'Winner :{winner}')
 print('----------------------------------')
 
 #creates an output txt file in the same folder
-csvpath = os.path.join
 sys.stdout = open('election_output.txt', 'w')
 print('Election Results')
 print('----------------------------------')
