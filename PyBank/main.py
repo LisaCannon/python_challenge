@@ -1,43 +1,56 @@
+#import modules needed to pull in data and output result
 import os
 import csv
+import sys
 
+#point to location of cvs file
 csvpath = os.path.join('..','..','RICEHOU201906DATA1','HW','03-Python',
     'Instructions','PyBank','Resources','budget_data.csv')
+
+#initialize variables
+#counts the number of months of data
+month_count = 0
+#will calculate the total P&L
+pl_tot = 0
+#will hold greatest increase
+incmax = 0
+#will hold greatest decrease
+decmax = 0
+
+#open data file using defined path
 with open(csvpath, newline = '') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
-
     csv_header = next(csvreader)
-    print(f"CSV Header: {csv_header}")
 
-    month_count = 0
-    pl_tot = 0
-    incmax = 0
-    decmax = 0
-
+    #loop through each row in P&L data to calculate results
     for a in csvreader :
         month_count += 1
         pl_tot += int(a[1])
+        #check to see if monthly value is the greatest increase
         if int(a[1]) > incmax:
             incmax = int(a[1])
             incdate = str(a[0])
+        #check to see if montly value is the greatest decrease
         elif int(a[1]) < decmax:
             decmax = int(a[1])
             decdate = str(a[0])
 
-    avg_chg = '${:,.2f}'.format(pl_tot/month_count)
-    total_money = '${}'.format(pl_tot)
-    dec_money = '${}'.format(decmax)
-    inc_money = '${}'.format(incmax)
+#calculations and formatting
+avg_chg = '${:,.2f}'.format(pl_tot/month_count)
+total_money = '${}'.format(pl_tot)
+dec_money = '${}'.format(decmax)
+inc_money = '${}'.format(incmax)
 
-    print("Finalcial Analysis")
-    print('--------------------------------')
-    print(f'Total Months: {month_count}')
-    print(f'Total:  {total_money}') 
-    print(f'Average Change: {avg_chg}')
-    print(f'Greatest Increase in Profits: {incdate} {inc_money}')
-    print(f'Greatest Decrease in Profits: {decdate} {dec_money}')
+#output to the terminal
+print("Finalcial Analysis")
+print('--------------------------------')
+print(f'Total Months: {month_count}')
+print(f'Total:  {total_money}') 
+print(f'Average Change: {avg_chg}')
+print(f'Greatest Increase in Profits: {incdate} {inc_money}')
+print(f'Greatest Decrease in Profits: {decdate} {dec_money}')
 
-import sys
+#creates an output file in the same folder
 sys.stdout = open('budget_output.txt', 'w')
 print("Finalcial Analysis")
 print('--------------------------------')
