@@ -3,6 +3,7 @@ import os
 import csv
 import sys
 
+#Python dictionary for state abbreviations
 us_state_abbrev = {
     'Alabama': 'AL',
     'Alaska': 'AK',
@@ -62,13 +63,11 @@ csvpath = os.path.join('..','..','RICEHOU201906DATA1','HW','03-Python',
 #point to lcation of csv output file
 outpath = os.path.join("employee_output.csv")
 
-
+#open input data file in defined path
 with open(csvpath, newline = '') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=',')
     csv_header = next(csvreader)
-
-    print(csv_header)
-
+    #open output datafile
     with open(outpath, 'w', newline='') as outfile:
 
         # Initialize csv.writer
@@ -76,26 +75,28 @@ with open(csvpath, newline = '') as csvfile:
 
         # Write the first row (column headers)
         csvwriter.writerow(['Emp ID','First Name', 'Last Name','DOB', 'SSN','State'])
-
-
-
+        #looping through each row, the data is formatted
         for rows in csvreader:
-            name_temp = rows[1]
-            date_temp = ['','','']
-            name_list = name_temp.split()
+            #format name to separate into first name and last name
+            name_list = rows[1].split()
             first_name = name_list[0]
             last_name = name_list[1]
+            #separate date into year, month, and day; format and reorder
             date_list = rows[2].split('-',)
+            date_temp = ['','','']
             for i in range(3):
+                #convert date values to string, with day and month having 2 characters
                 if int(date_list[i]) < 10:
                     date_temp[i]=' ' +str(date_list[i])
                 else:
                     date_temp[i] = str(date_list[i])
             date_format = date_temp[1] +'/'+date_temp[2]+'/'+date_temp[0]
+            #hides the first 5 numbers of the SSN
             ssn = rows[3].split('-',)
             new_ssn = '***-**-'+str(ssn[2])
+            #use the state dictionary to abbreviate 
             full_state = rows[4]
             abrv_state = str(us_state_abbrev[full_state])
+            #write each row of reformatted data to output file
             csvwriter.writerow([rows[0],first_name, last_name, date_format, new_ssn, abrv_state])
-    #print(abrv_state)
 
