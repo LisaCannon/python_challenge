@@ -10,12 +10,14 @@ csvpath = os.path.join('..','..','RICEHOU201906DATA1','HW','03-Python',
 #initialize variables
 #counts the number of months of data
 month_count = 0
-#will calculate the total P&L
+#totals the P&L values
 pl_tot = 0
 #will hold greatest increase
 incmax = 0
 #will hold greatest decrease
 decmax = 0
+#will total the month-over-month change
+change_tot = 0
 
 #open data file using defined path
 with open(csvpath, newline = '') as csvfile:
@@ -23,9 +25,14 @@ with open(csvpath, newline = '') as csvfile:
     csv_header = next(csvreader)
 
     #loop through each row in P&L data to calculate results
-    for a in csvreader :
+    for i, a in enumerate(csvreader) :
         month_count += 1
         pl_tot += int(a[1])
+        #subtracts last month P&L from current month to get change and gets running total
+        if i > 0:
+            change_calc = int(a[1]) - pl_last
+            change_tot += change_calc
+        pl_last = int(a[1])
         #check to see if monthly value is the greatest increase
         if int(a[1]) > incmax:
             incmax = int(a[1])
@@ -36,7 +43,7 @@ with open(csvpath, newline = '') as csvfile:
             decdate = str(a[0])
 
 #calculations and formatting
-avg_chg = '${:,.2f}'.format(pl_tot/month_count)
+avg_chg = '${:,.2f}'.format(change_tot/month_count)
 total_money = '${}'.format(pl_tot)
 dec_money = '${}'.format(decmax)
 inc_money = '${}'.format(incmax)
