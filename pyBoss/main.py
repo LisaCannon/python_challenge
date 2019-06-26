@@ -87,7 +87,7 @@ with open(csvpath, newline = '') as csvfile:
             for i in range(3):
                 #convert date values to string, with day and month having 2 characters
                 if int(date_list[i]) < 10:
-                    date_temp[i]=' ' +str(date_list[i])
+                    date_temp[i]='0' +str(date_list[i])
                 else:
                     date_temp[i] = str(date_list[i])
             date_format = date_temp[1] +'/'+date_temp[2]+'/'+date_temp[0]
